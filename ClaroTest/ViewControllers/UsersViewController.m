@@ -46,6 +46,7 @@
     self.searchController.obscuresBackgroundDuringPresentation = NO;
     self.searchController.searchBar.placeholder = Constants.search_contact;
     
+    self.definesPresentationContext = YES;
     self.navigationItem.searchController = self.searchController;
     self.navigationItem.hidesSearchBarWhenScrolling = NO;
     
@@ -60,16 +61,39 @@
                                      style:UIBarButtonItemStylePlain
                                     target:self
                                     action:@selector(deleteAllUsers)];
+    
+//    if ([[NSProcessInfo processInfo].arguments containsObject:@"UITEST_MODE"]) {
+//        
+//        Contact *c = [Contact new];
+//        c.name = @"Test";
+//        c.lastName = @"User";
+//        c.phone = @"8291234567";
+//        c.imageUrl = @"https://picsum.photos/200";
+//        
+//        self.users = [@[c] mutableCopy];
+//        self.filteredUsers = self.users;
+//        [self.tableView reloadData];
+//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    NSArray<Contact *> *savedContacts = [self.repo getContacts];
-    
-    self.users = [savedContacts mutableCopy];
-    self.filteredUsers = self.users;
-    
+    if ([[NSProcessInfo processInfo].arguments containsObject:@"UITEST_MODE"]) {
+           
+           Contact *c = [Contact new];
+           c.name = @"Test";
+           c.lastName = @"User";
+           c.phone = @"8291234567";
+           c.imageUrl = @"https://picsum.photos/200";
+           
+           self.users = [@[c] mutableCopy];
+           self.filteredUsers = self.users;
+       } else {
+           NSArray<Contact *> *savedContacts = [self.repo getContacts];
+           self.users = [savedContacts mutableCopy];
+           self.filteredUsers = self.users;
+       }
     [self.tableView reloadData];
     [self updateEmptyState];
 }
@@ -156,6 +180,8 @@
         phoneLabel.textColor = UIColor.darkGrayColor;
         [cell.contentView addSubview:phoneLabel];
     }
+    cell.isAccessibilityElement = YES;
+    cell.accessibilityIdentifier = @"contact_cell";
 
     nameLabel.text = fullName;
     phoneLabel.text = user.phone;

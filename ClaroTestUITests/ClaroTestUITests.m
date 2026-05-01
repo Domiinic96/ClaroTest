@@ -1,43 +1,86 @@
-//
-//  ClaroTestUITests.m
-//  ClaroTestUITests
-//
-//  Created by Luis Santana on 30/4/26.
-//
-
 #import <XCTest/XCTest.h>
 
 @interface ClaroTestUITests : XCTestCase
+
+@property (nonatomic, strong) XCUIApplication *app;
 
 @end
 
 @implementation ClaroTestUITests
 
 - (void)setUp {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-
-    // In UI tests it is usually best to stop immediately when a failure occurs.
     self.continueAfterFailure = NO;
-
-    // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    
+    self.app = [[XCUIApplication alloc] init];
+    [self.app launch];
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+
+- (void)testListLoads {
+    
+    XCUIElement *table = self.app.tables.firstMatch;
+    XCTAssertTrue(table.exists);
 }
 
-- (void)testExample {
-    // UI tests must launch the application that they test.
+
+- (void)testSearchContact {
+    
     XCUIApplication *app = [[XCUIApplication alloc] init];
+    app.launchArguments = @[@"UITEST_MODE"];
     [app launch];
-
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-    // XCUIAutomation Documentation
-    // https://developer.apple.com/documentation/xcuiautomation
+    
+    XCUIElement *text = app.staticTexts[@"Test User"];
+    XCTAssertTrue([text waitForExistenceWithTimeout:5]);
+    
+    XCUIElement *searchField = app.searchFields.firstMatch;
+    XCTAssertTrue([searchField waitForExistenceWithTimeout:5]);
+    
+    [searchField tap];
+    [searchField typeText:@"829"];
+    
+    XCTAssertTrue([text waitForExistenceWithTimeout:5]);
 }
+
+- (void)testEmptySearchShowsMessage {
+    
+    XCUIElement *searchField = self.app.searchFields.firstMatch;
+    [searchField tap];
+    [searchField typeText:@"zzzzzzz"];
+    
+    XCUIElement *label = self.app.staticTexts[@"No hay resultados para su búsqueda"];
+    XCTAssertTrue(label.exists);
+}
+
+
+- (void)testOpenDetail {
+    
+    self.app.launchArguments = @[@"UITEST_MODE"];
+    [self.app launch];
+    
+    XCUIElement *cell = self.app.tables.cells.firstMatch;
+    
+    XCTAssertTrue([cell waitForExistenceWithTimeout:5]);
+    
+    [cell tap];
+    
+    XCUIElement *navBar = self.app.navigationBars.firstMatch;
+    XCTAssertTrue([navBar waitForExistenceWithTimeout:5]);
+}
+
+- (void)testOpenAddContact {
+    
+    XCUIElement *newButton = self.app.navigationBars.buttons[@"Nuevo"];
+    XCTAssertTrue(newButton.exists);
+    
+    [newButton tap];
+    
+    XCUIElement *cancelButton = self.app.navigationBars.buttons[@"Cancelar"];
+    XCTAssertTrue(cancelButton.exists);
+}
+
+#pragma mark - Performance
 
 - (void)testLaunchPerformance {
-    // This measures how long it takes to launch your application.
     [self measureWithMetrics:@[[[XCTApplicationLaunchMetric alloc] init]] block:^{
         [[[XCUIApplication alloc] init] launch];
     }];
