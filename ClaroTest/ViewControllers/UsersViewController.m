@@ -31,11 +31,11 @@
     
     ContactStorage *storage = [[ContactStorage alloc] init];
     self.repo = [[ContactRepository alloc]initWithStorage:storage];
-      
-      NSArray<Contact *> *savedContacts = [_repo getContacts];
-      
-      self.users = [savedContacts mutableCopy];
-      self.filteredUsers = self.users;
+    
+    NSArray<Contact *> *savedContacts = [_repo getContacts];
+    
+    self.users = [savedContacts mutableCopy];
+    self.filteredUsers = self.users;
     
     [self.tableView registerClass:UITableViewCell.class
            forCellReuseIdentifier:Constants.cell];
@@ -76,24 +76,24 @@
 - (void)deleteAllUsers {
     
     [UIView transitionWithView:self.tableView
-                         duration:0.3
-                          options:UIViewAnimationOptionTransitionCrossDissolve
-                       animations:^{
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+        
         [self.repo deleteAll];
-           [self.users removeAllObjects];
-           [self.tableView reloadData];
-       } completion:nil];
+        
+        [self.users removeAllObjects];
+        self.filteredUsers = self.users;
+        
+        [self.tableView reloadData];
+        
+    } completion:nil];
 }
 
 #pragma mark - Open SwiftUI
 
 - (void)openAddUser {
-    
-    
     UIViewController *vc = [SwiftUIWrapper createAddUser];
-    
-    [self.tableView reloadData];
-      
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - Table
@@ -104,43 +104,43 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
     UITableViewCell *cell =
     [tableView dequeueReusableCellWithIdentifier:Constants.cell forIndexPath:indexPath];
-
+    
     Contact *user = self.searchController.isActive
-        ? self.filteredUsers[indexPath.row]
-        : self.users[indexPath.row];
-
+    ? self.filteredUsers[indexPath.row]
+    : self.users[indexPath.row];
+    
     cell.textLabel.text = user.name;
     cell.detailTextLabel.text = user.phone;
-
+    
     UIImageView *imgView = [cell.contentView viewWithTag:1001];
-
+    
     if (!imgView) {
         imgView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 8, 40, 40)];
         imgView.tag = 1001;
-
+        
         imgView.layer.cornerRadius = 20;
         imgView.clipsToBounds = YES;
         imgView.contentMode = UIViewContentModeScaleAspectFill;
-
+        
         [cell.contentView addSubview:imgView];
     }
-
+    
     UIImage *placeholder = [UIImage systemImageNamed:Constants.cell_placeholder_imge];
     NSURL *url = [NSURL URLWithString:user.imageUrl];
-
+    
     [imgView sd_setImageWithURL:url
                placeholderImage:placeholder
                         options:SDWebImageRetryFailed];
-
+    
     cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
     cell.detailTextLabel.textColor = UIColor.grayColor;
-
+    
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
+    
     return cell;
 }
 
@@ -148,7 +148,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    Contact *user = self.users[indexPath.row];
+    Contact *user = self.searchController.isActive
+    ? self.filteredUsers[indexPath.row]
+    : self.users[indexPath.row];
     
     Contact *contact = [[Contact alloc] init];
     contact.name = user.name;
@@ -169,8 +171,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         Contact *contact = self.searchController.isActive
-            ? self.filteredUsers[indexPath.row]
-            : self.users[indexPath.row];
+        ? self.filteredUsers[indexPath.row]
+        : self.users[indexPath.row];
         
         [self.repo deleteContact:contact];
         
@@ -207,7 +209,5 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self.tableView reloadData];
 }
-
-
 
 @end
