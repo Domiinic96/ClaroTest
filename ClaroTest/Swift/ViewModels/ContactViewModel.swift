@@ -19,8 +19,6 @@ final class ContactViewModel: ContactViewModelProtocol, ObservableObject {
     private let repository: ContactRepositoryProtocol
     private let imageService: ImageServiceProtocol
     
-    //var onSave: (([Contact]) -> Void)?
-    
     init(repository: ContactRepositoryProtocol,
          imageService: ImageServiceProtocol) {
         self.repository = repository
@@ -33,8 +31,6 @@ final class ContactViewModel: ContactViewModelProtocol, ObservableObject {
     }
     
     func save() {
-        isloadingImage = true
-        defer { isloadingImage = false }
         let contact = Contact()
         contact.id = UUID().uuidString
         contact.name = name

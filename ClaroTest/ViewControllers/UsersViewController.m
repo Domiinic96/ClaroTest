@@ -71,6 +71,7 @@
     self.filteredUsers = self.users;
     
     [self.tableView reloadData];
+    [self updateEmptyState];
 }
 
 - (void)deleteAllUsers {
@@ -86,6 +87,7 @@
         self.filteredUsers = self.users;
         
         [self.tableView reloadData];
+        [self updateEmptyState];
         
     } completion:nil];
 }
@@ -104,43 +106,63 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     UITableViewCell *cell =
     [tableView dequeueReusableCellWithIdentifier:Constants.cell forIndexPath:indexPath];
-    
+
     Contact *user = self.searchController.isActive
-    ? self.filteredUsers[indexPath.row]
-    : self.users[indexPath.row];
-    
-    cell.textLabel.text = user.name;
-    cell.detailTextLabel.text = user.phone;
-    
+        ? self.filteredUsers[indexPath.row]
+        : self.users[indexPath.row];
+
     UIImageView *imgView = [cell.contentView viewWithTag:1001];
-    
+
     if (!imgView) {
-        imgView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 8, 40, 40)];
+        imgView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
         imgView.tag = 1001;
-        
-        imgView.layer.cornerRadius = 20;
+
+        imgView.layer.cornerRadius = 6;
+        imgView.layer.borderWidth = 1;
+        imgView.layer.borderColor = UIColor.lightGrayColor.CGColor;
+
         imgView.clipsToBounds = YES;
         imgView.contentMode = UIViewContentModeScaleAspectFill;
-        
+
         [cell.contentView addSubview:imgView];
     }
-    
+
     UIImage *placeholder = [UIImage systemImageNamed:Constants.cell_placeholder_imge];
     NSURL *url = [NSURL URLWithString:user.imageUrl];
-    
+
     [imgView sd_setImageWithURL:url
                placeholderImage:placeholder
                         options:SDWebImageRetryFailed];
-    
-    cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
-    cell.detailTextLabel.textColor = UIColor.grayColor;
-    
+
+    NSString *fullName = [NSString stringWithFormat:@"%@ %@", user.name ?: @"", user.lastName ?: @""];
+
+    UILabel *nameLabel = [cell.contentView viewWithTag:2001];
+    UILabel *phoneLabel = [cell.contentView viewWithTag:2002];
+
+    if (!nameLabel) {
+        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 10, 250, 20)];
+        nameLabel.tag = 2001;
+        nameLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+        [cell.contentView addSubview:nameLabel];
+    }
+
+    if (!phoneLabel) {
+        phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 32, 250, 18)];
+        phoneLabel.tag = 2002;
+        phoneLabel.font = [UIFont systemFontOfSize:13];
+        phoneLabel.textColor = UIColor.darkGrayColor;
+        [cell.contentView addSubview:phoneLabel];
+    }
+
+    nameLabel.text = fullName;
+    phoneLabel.text = user.phone;
+
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     return cell;
 }
 
@@ -181,6 +203,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         [tableView deleteRowsAtIndexPaths:@[indexPath]
                          withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self updateEmptyState];
     }
 }
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
@@ -196,18 +219,43 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             NSString *name = user.name ?: @"";
             NSString *lastName = user.lastName ?: @"";
             NSString *phone = user.phone ?: @"";
-            NSString *imageUrl = user.imageUrl ?: @"";
             
             return ([name.lowercaseString containsString:searchText] ||
                     [lastName.lowercaseString containsString:searchText] ||
-                    [phone.lowercaseString containsString:searchText] ||
-                    [imageUrl.lowercaseString containsString:searchText]);
+                    [phone.lowercaseString containsString:searchText]);
         }];
         
         self.filteredUsers = [self.users filteredArrayUsingPredicate:predicate];
     }
     
     [self.tableView reloadData];
+    [self updateEmptyState];
+}
+
+- (void)updateEmptyState {
+
+    BOOL isSearching = self.searchController.isActive;
+    
+    BOOL hasNoSearchResults = isSearching && self.filteredUsers.count == 0;
+    BOOL hasNoData = !isSearching && self.users.count == 0;
+
+    if (hasNoSearchResults || hasNoData) {
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:self.tableView.bounds];
+        
+        label.text = hasNoSearchResults
+            ? Constants.no_results
+            : Constants.no_contacts;
+        
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = UIColor.grayColor;
+        label.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+        
+        self.tableView.backgroundView = label;
+        
+    } else {
+        self.tableView.backgroundView = nil;
+    }
 }
 
 @end

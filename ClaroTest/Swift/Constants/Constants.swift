@@ -14,9 +14,9 @@ class Constants: NSObject {
     static let maxContacts = 100
     static let key = "contacts_key"
     static let load_image = "Cargar imagen"
-    static let nombre = "Nombre"
-    static let apellido = "Apellido"
-    static let telefono = "Teléfono"
+    static let name = "Nombre"
+    static let lastName = "Apellido"
+    static let phone = "Teléfono"
     static let save = "Guaerdar"
     static let new_contact = "Nuevo contacto"
     static let cancel = "Cancelar"
@@ -28,4 +28,7 @@ class Constants: NSObject {
     static let newTitle = "Nuevo"
     static let delete = "Borrar"
     static let cell_placeholder_imge = "person.circle.fill"
+    static let no_contacts = "No hay contactos disponibles"
+    static let no_results = "No hay resultados para su búsqueda"
+    static let phone_fill = "phone.fill"
 }
