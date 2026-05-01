@@ -42,7 +42,5 @@ final class ContactViewModel: ContactViewModelProtocol, ObservableObject {
         contact.phone = phone
         contact.imageUrl = imageUrl
         repository.addContact(contact)
-        //let contacts = repository.getContacts()
-        //onSave?(contacts)
     }
 }

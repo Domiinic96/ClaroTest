@@ -15,7 +15,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeObject:self.Id forKey:@"Id"]; // 👈 FALTABA
+    [coder encodeObject:self.Id forKey:@"Id"];
     [coder encodeObject:self.name forKey:@"name"];
     [coder encodeObject:self.lastName forKey:@"lastName"];
     [coder encodeObject:self.phone forKey:@"phone"];
@@ -25,7 +25,7 @@
 - (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super init];
     if (self) {
-        self.Id = [coder decodeObjectForKey:@"Id"]; // 👈 FALTABA
+        self.Id = [coder decodeObjectForKey:@"Id"]; 
         self.name = [coder decodeObjectForKey:@"name"];
         self.lastName = [coder decodeObjectForKey:@"lastName"];
         self.phone = [coder decodeObjectForKey:@"phone"];

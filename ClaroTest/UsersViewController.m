@@ -115,7 +115,6 @@
     cell.textLabel.text = user.name;
     cell.detailTextLabel.text = user.phone;
 
-    // 🔥 IDENTIFICADOR DE IMAGE VIEW (evita duplicados)
     UIImageView *imgView = [cell.contentView viewWithTag:1001];
 
     if (!imgView) {
