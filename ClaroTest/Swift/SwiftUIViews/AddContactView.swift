@@ -19,26 +19,31 @@ struct AddContactView<ViewModel: ContactViewModelProtocol>: View {
             ScrollView {
                 VStack(spacing: 20) {
                     VStack(spacing: 10) {
-                        
-                        AsyncImage(url: URL(string: vm.imageUrl)) { phase in
-                            switch phase {
-                            case .empty:
-                                placeholder
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                            case .failure:
-                                placeholder
-                            @unknown default:
-                                EmptyView()
+                        if vm.isloadingImage {
+                               SkeletonView()
+                                   .frame(width: 240, height: 240)
+                                   .transition(.opacity)
+                        } else {
+                            AsyncImage(url: URL(string: vm.imageUrl)) { phase in
+                                switch phase {
+                                case .empty:
+                                    placeholder
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                case .failure:
+                                    placeholder
+                                @unknown default:
+                                    EmptyView()
+                                }
                             }
+                            .frame(width: 240, height: 240)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .background(Color(.systemGray6))
+                            .cornerRadius(16)
+                            
                         }
-                        .frame(width: 240, height: 240)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .background(Color(.systemGray6))
-                        .cornerRadius(16)
-                        
                         Button(Constants.load_image) {
                             Task { await vm.loadImage() }
                         }
@@ -75,19 +80,30 @@ struct AddContactView<ViewModel: ContactViewModelProtocol>: View {
             }
             
             
-            Button(action: {
+            
+            Button {
                 vm.save()
-                dismiss()
-            }) {
-                Text(Constants.save)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding()
+                
+                if vm.isValid {
+                    dismiss()
+                }
+            } label: {
+                if vm.isSaving {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                } else {
+                    Text(Constants.save)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
             }
-            .background(Color(.systemBackground))
+            .background(vm.isValid ? Color.blue : Color.gray)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .padding()
+            .disabled(!vm.isValid || vm.isSaving || vm.isloadingImage)
             
         }
         .onAppear(perform: {

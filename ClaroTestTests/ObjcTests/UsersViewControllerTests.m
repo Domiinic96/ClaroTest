@@ -76,4 +76,30 @@
     XCTAssertEqual(self.vc.users.count, 1);
 }
 
+- (void)testDeleteUserViaDelegate {
+    
+    NSInteger initialCount = self.vc.users.count;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    [self.vc tableView:self.vc.tableView
+commitEditingStyle:UITableViewCellEditingStyleDelete
+forRowAtIndexPath:indexPath];
+    
+    XCTAssertEqual(self.vc.users.count, initialCount - 1);
+}
+
+- (void)testSearchFiltersByPhone {
+    
+    self.vc.searchController.active = YES;
+    self.vc.searchController.searchBar.text = @"809";
+    
+    [self.vc updateSearchResultsForSearchController:self.vc.searchController];
+    
+    XCTAssertEqual(self.vc.filteredUsers.count, 1);
+    
+    Contact *result = self.vc.filteredUsers.firstObject;
+    XCTAssertEqualObjects(result.phone, @"8099999999");
+}
+
 @end

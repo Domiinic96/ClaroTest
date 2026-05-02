@@ -17,7 +17,7 @@ class Constants: NSObject {
     static let name = "Nombre"
     static let lastName = "Apellido"
     static let phone = "Teléfono"
-    static let save = "Guaerdar"
+    static let save = "Guardar"
     static let new_contact = "Nuevo contacto"
     static let cancel = "Cancelar"
     static let photo_placeholder = "photo"

@@ -10,14 +10,18 @@ final class MockRepository: ContactRepositoryProtocol {
     
     var savedContact: Contact?
     
-    func getContacts() -> [Contact] { return [] }
+    func getContacts() -> [Contact] { return [savedContact!] }
     
     func addContact(_ contact: Contact) {
         savedContact = contact
     }
     
-    func deleteContact(_ contact: Contact) {}
-    func deleteAll() {}
+    func deleteContact(_ contact: Contact) {
+        savedContact = nil
+    }
+    func deleteAll() {
+        savedContact = nil
+    }
 }
 
 final class MockImageService: ImageServiceProtocol {

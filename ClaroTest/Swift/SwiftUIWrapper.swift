@@ -21,10 +21,6 @@ import SwiftUI
         let vm = ContactViewModel(repository: repo,
                                   imageService: imageService)
 
-//        vm.onSave = { contact in
-//            
-//            onSave(contact)
-//        }
 
         let view = AddContactView(vm: vm)
         return UIHostingController(rootView: view)

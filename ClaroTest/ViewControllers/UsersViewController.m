@@ -62,18 +62,6 @@
                                     target:self
                                     action:@selector(deleteAllUsers)];
     
-//    if ([[NSProcessInfo processInfo].arguments containsObject:@"UITEST_MODE"]) {
-//        
-//        Contact *c = [Contact new];
-//        c.name = @"Test";
-//        c.lastName = @"User";
-//        c.phone = @"8291234567";
-//        c.imageUrl = @"https://picsum.photos/200";
-//        
-//        self.users = [@[c] mutableCopy];
-//        self.filteredUsers = self.users;
-//        [self.tableView reloadData];
-//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
