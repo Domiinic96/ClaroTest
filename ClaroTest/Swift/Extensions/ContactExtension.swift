@@ -4,7 +4,7 @@
 //
 //  Created by Luis Santana on 1/5/26.
 //
-
+import Foundation
 extension Contact {
     static var mock: Contact {
         let c = Contact()

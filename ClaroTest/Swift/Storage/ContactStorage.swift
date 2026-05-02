@@ -12,13 +12,17 @@ import Foundation
 @objc final class ContactStorage: NSObject, ContactStorageProtocol {
     
     func save(_ contacts: [Contact]) {
-        let data = try? NSKeyedArchiver.archivedData(withRootObject: contacts, requiringSecureCoding: true)
+        
+        let encoder = JSONEncoder()
+        
+        let data = try? encoder.encode(contacts)
         UserDefaults.standard.set(data, forKey: Constants.key)
     }
     
     func fetch() -> [Contact] {
+        let decoder = JSONDecoder()
         guard let data = UserDefaults.standard.data(forKey: Constants.key),
-              let contacts = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSArray.self, Contact.self], from: data) as? [Contact] else {
+              let contacts = try? decoder.decode([Contact].self, from: data) else {
             return []
         }
         return contacts

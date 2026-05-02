@@ -91,4 +91,28 @@ final class ContactViewModelTests: XCTestCase {
         XCTAssertNotNil(savedContact)
     }
     
+    @MainActor func testDeleteAll() {
+        let vm = ContactViewModel(repository: repo, imageService: imageService)
+        
+        vm.name = "Luis"
+        vm.lastName = "Santana"
+        vm.phone = "8291234567"
+        vm.imageUrl = "url"
+        vm.save()
+        repo.deleteAll()
+        XCTAssertNil(repo.savedContact)
+    }
+    
+    @MainActor func testGetContacts() {
+        let vm = ContactViewModel(repository: repo, imageService: imageService)
+        
+        vm.name = "Luis"
+        vm.lastName = "Santana"
+        vm.phone = "8291234567"
+        vm.imageUrl = "url"
+        vm.save()
+        XCTAssertTrue(repo.getContacts().count>0)
+    }
+
+    
 }

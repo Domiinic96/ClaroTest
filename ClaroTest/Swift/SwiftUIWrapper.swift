@@ -9,26 +9,24 @@
 import SwiftUI
 
 @objc class SwiftUIWrapper: NSObject {
-
+    
     @MainActor
     @objc(createAddUser)
-     static func createAddUser() -> UIViewController {
-
-        let storage = ContactStorage()
-        let repo = ContactRepository(storage: storage)
-        let imageService = ImageService()
-
-        let vm = ContactViewModel(repository: repo,
-                                  imageService: imageService)
-
-
+    static func createAddUser() -> UIViewController {
+        
+        let container = AppContainer.shared
+        
+        let vm = ContactViewModel(repository: container.contactRepository,
+                                  imageService: container.imageService)
+        
+        
         let view = AddContactView(vm: vm)
         return UIHostingController(rootView: view)
     }
     
     @MainActor
-       @objc static func createDetailView(contact: Contact) -> UIViewController {
-           let view = ContactDetailView(contact: contact)
-           return UIHostingController(rootView: view)
-       }
+    @objc static func createDetailView(contact: Contact) -> UIViewController {
+        let view = ContactDetailView(contact: contact)
+        return UIHostingController(rootView: view)
+    }
 }

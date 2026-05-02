@@ -8,15 +8,15 @@
 
 final class MockRepository: ContactRepositoryProtocol {
     
-    var savedContact: Contact?
+    var savedContact: ClaroTest.Contact?
     
-    func getContacts() -> [Contact] { return [savedContact!] }
+    func getContacts() -> [ClaroTest.Contact] { return [savedContact!] }
     
-    func addContact(_ contact: Contact) {
+    func addContact(_ contact: ClaroTest.Contact) {
         savedContact = contact
     }
     
-    func deleteContact(_ contact: Contact) {
+    func deleteContact(_ contact: ClaroTest.Contact) {
         savedContact = nil
     }
     func deleteAll() {

@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "UsersViewController.h"
-#import "Contact.h"
+#import "ClaroTest-Swift.h"
 
 @interface UsersViewController (Test)
 @property (nonatomic, strong) NSMutableArray<Contact *> *users;

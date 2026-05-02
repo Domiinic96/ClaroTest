@@ -4,7 +4,7 @@
 //
 //  Created by Luis Santana on 30/4/26.
 //
-
+import Foundation
 
 @objcMembers
 class Constants: NSObject {

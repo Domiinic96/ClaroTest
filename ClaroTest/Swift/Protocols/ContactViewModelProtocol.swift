@@ -5,6 +5,8 @@
 //  Created by Luis Santana on 30/4/26.
 //
 
+import Foundation
+
 
 @MainActor
 protocol ContactViewModelProtocol: ObservableObject {

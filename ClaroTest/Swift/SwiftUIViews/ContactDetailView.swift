@@ -32,7 +32,7 @@ struct ContactDetailView: View {
                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
             )
             
-            Text("\(contact.name ?? "") \(contact.lastName ?? "")")
+            Text("\(contact.name) \(contact.lastName)")
                 .font(.title2)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
@@ -41,7 +41,7 @@ struct ContactDetailView: View {
                 Image(systemName: Constants.phone_fill)
                     .foregroundColor(.blue)
                 
-                Text(contact.phone ?? "")
+                Text(contact.phone)
                     .font(.body)
                     .foregroundColor(.primary)
                 

@@ -42,6 +42,13 @@
 			);
 			target = FB4635A02FA3B4B700767B33 /* ClaroTest */;
 		};
+		FBC79C332FA68B1A00D3974B /* Exceptions for "ClaroTest" folder in "ClaroTestTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/Contact.swift,
+			);
+			target = FB4635BB2FA3B4BA00767B33 /* ClaroTestTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -49,6 +56,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				FB4635CE2FA3B4BA00767B33 /* Exceptions for "ClaroTest" folder in "ClaroTest" target */,
+				FBC79C332FA68B1A00D3974B /* Exceptions for "ClaroTest" folder in "ClaroTestTests" target */,
 			);
 			path = ClaroTest;
 			sourceTree = "<group>";
@@ -318,6 +326,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.luis.ClaroTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_BRIDGING_HEADER_IS_INTERNAL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ClaroTest/ClaroTest-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -349,6 +358,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.luis.ClaroTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_BRIDGING_HEADER_IS_INTERNAL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ClaroTest/ClaroTest-Bridging-Header.h";
 				SWIFT_VERSION = 6.0;
@@ -391,6 +401,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -414,6 +425,8 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_BRIDGING_HEADER_IS_INTERNAL = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ClaroTest-Swift.h";
 			};
 			name = Debug;
 		};
@@ -452,6 +465,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -468,6 +482,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_BRIDGING_HEADER_IS_INTERNAL = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ClaroTest-Swift.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

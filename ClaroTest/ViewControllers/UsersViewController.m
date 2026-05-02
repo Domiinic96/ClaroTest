@@ -9,7 +9,7 @@
 #import "UsersViewController.h"
 #import <SDWebImage/SDWebImage.h>
 #import "ClaroTest-Swift.h"
-#import "Contact.h"
+//#import "Contact.h"
 
 
 @interface UsersViewController () <UISearchResultsUpdating>
