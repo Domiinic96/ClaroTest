@@ -76,6 +76,12 @@ struct AddContactView<ViewModel: ContactViewModelProtocol>: View {
                     .background(Color(.systemBackground))
                     .cornerRadius(12)
                     .padding(.horizontal)
+                }.alert(Constants.error_title, isPresented: .constant(vm.errorMessage != nil)) {
+                    Button(Constants.OK) {
+                        vm.errorMessage = nil
+                    }
+                } message: {
+                    Text(vm.errorMessage ?? "")
                 }
             }
             

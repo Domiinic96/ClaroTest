@@ -16,7 +16,7 @@ final class ContactViewModelTests: XCTestCase {
     
     override func setUp() {
         repo = MockRepository()
-        imageService = MockImageService()
+        imageService = MockImageService(result: .success("https://test.com/image.jpg"))
         
     }
     
@@ -50,6 +50,21 @@ final class ContactViewModelTests: XCTestCase {
         let imageUrl = vm.imageUrl
         
         XCTAssertEqual(imageUrl, "https://test.com/image.jpg")
+    }
+    
+    
+    @MainActor
+    func testLoadImageFail() async {
+        
+        let failMock = MockImageService(result: .failure(URLError(.badServerResponse)))
+        let vm = ContactViewModel(
+            repository: repo,
+            imageService:failMock
+        )
+        
+        await vm.loadImage()
+      
+        XCTAssertEqual(vm.errorMessage, Constants.image_error_message)
     }
     
     @MainActor
@@ -113,6 +128,27 @@ final class ContactViewModelTests: XCTestCase {
         vm.save()
         XCTAssertTrue(repo.getContacts().count>0)
     }
+    
+    
+    @MainActor func testIsValidUserProperties() {
+        let vm = ContactViewModel(repository: repo, imageService: imageService)
+        
+        vm.name = "Luis"
+        vm.lastName = "Santana"
+        vm.phone = "8291234567"
+        XCTAssertTrue(vm.isValid)
+    }
+    
+    
+    @MainActor func testIsNotValidUserProperties() {
+        let vm = ContactViewModel(repository: repo, imageService: imageService)
+        
+        vm.name = ""
+        vm.lastName = ""
+        vm.phone = ""
+        XCTAssertFalse(vm.isValid)
+    }
+
 
     
 }

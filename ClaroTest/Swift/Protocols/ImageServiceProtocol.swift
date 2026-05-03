@@ -7,5 +7,5 @@
 
 
 protocol ImageServiceProtocol:Sendable {
-    func fetchRandomImage() async -> String
+    func fetchRandomImage() async ->  Result<String, Error>
 }

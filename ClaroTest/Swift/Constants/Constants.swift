@@ -11,7 +11,6 @@ class Constants: NSObject {
     
     static let imageUrl = "https://picsum.photos/200"
     static let appName = "ClaroTest"
-    static let maxContacts = 100
     static let key = "contacts_key"
     static let load_image = "Cargar imagen"
     static let name = "Nombre"
@@ -31,4 +30,8 @@ class Constants: NSObject {
     static let no_contacts = "No hay contactos disponibles"
     static let no_results = "No hay resultados para su búsqueda"
     static let phone_fill = "phone.fill"
+    static let image_error_message = "No se pudo cargar la imagen"
+    static let error_title = "Error"
+    static let OK = "OK"
+    
 }

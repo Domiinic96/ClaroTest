@@ -5,6 +5,7 @@
 //  Created by Luis Santana on 1/5/26.
 //
 @testable import ClaroTest
+import Foundation
 
 final class MockRepository: ContactRepositoryProtocol {
     
@@ -26,7 +27,13 @@ final class MockRepository: ContactRepositoryProtocol {
 
 final class MockImageService: ImageServiceProtocol {
     
-    func fetchRandomImage() async -> String {
-        return "https://test.com/image.jpg"
+    let result: Result<String, Error>
+    
+    init(result: Result<String, Error>) {
+        self.result = result
+    }
+    
+    func fetchRandomImage() async -> Result<String, Error> {
+        return result
     }
 }

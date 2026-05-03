@@ -16,7 +16,8 @@ protocol ContactViewModelProtocol: ObservableObject {
     var imageUrl: String { get set }
     var isloadingImage: Bool {get set}
     var isSaving: Bool {get set}
-    var isValid: Bool { get } 
+    var isValid: Bool { get }
+    var errorMessage: String? {get set}
     func loadImage() async
     func save()
 }

@@ -16,6 +16,7 @@ final class ContactViewModel: ContactViewModelProtocol, ObservableObject {
     @Published var imageUrl = ""
     @Published var isloadingImage: Bool = false
     @Published var isSaving: Bool = false
+    @Published var errorMessage: String? = nil
     
     private let repository: ContactRepositoryProtocol
     private let imageService: ImageServiceProtocol
@@ -40,10 +41,17 @@ final class ContactViewModel: ContactViewModelProtocol, ObservableObject {
         
         defer { isloadingImage = false }
         
-        let url = await imageService.fetchRandomImage()
+        let result = await imageService.fetchRandomImage()
         
-        imageUrl = url
-        
+        switch result {
+        case .success(let finalUrl):
+            self.imageUrl = finalUrl
+            self.errorMessage = nil
+        case .failure(let errorMessage):
+            self.imageUrl = ""
+            self.errorMessage = Constants.image_error_message
+            print("error al intentar obtener la imagen: \(errorMessage)")
+        }
         
     }
     
@@ -51,6 +59,7 @@ final class ContactViewModel: ContactViewModelProtocol, ObservableObject {
         guard isValid, !isSaving else { return }
         
         isSaving = true
+        defer {isSaving = false}
         
         let contact = Contact()
         contact.id = UUID().uuidString
@@ -61,6 +70,5 @@ final class ContactViewModel: ContactViewModelProtocol, ObservableObject {
         
         repository.addContact(contact)
         
-        isSaving = false
     }
 }
